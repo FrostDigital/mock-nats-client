@@ -1,0 +1,6 @@
+node_modules
+npm-debug.log
+db
+log
+.health
+bankid-cert.p12
