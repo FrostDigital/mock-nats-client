@@ -21,4 +21,6 @@ Use same way as NATS node client.
 On the roadmap:
 
 * Request
+* Auto unsubscribe
+* Max wanted
 * ...you name it!

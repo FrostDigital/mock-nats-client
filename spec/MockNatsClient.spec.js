@@ -89,4 +89,24 @@ describe("MockNatsClient", () => {
 		}, 200);
 	});
 
+	it("should publish to one in each queue group plus subscription wo any queue", (done) => {
+		let numInvocations = 0;
+		function count() {
+			numInvocations++;
+		}
+		
+		client.subscribe("foo", { queue: "q1" }, count);
+		client.subscribe("foo", { queue: "q1" }, count);
+		client.subscribe("foo", { queue: "q2" }, count);
+		client.subscribe("foo", { queue: "q2" }, count);
+		client.subscribe("foo", {}, count);
+		
+		client.publish("foo", "message");		
+		
+		setTimeout(() => {
+			expect(numInvocations).toBe(3);
+			done();
+		}, 200);
+	});
+
 });
