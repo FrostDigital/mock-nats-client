@@ -1,7 +1,6 @@
 {
   "name": "mock-nats-client",
   "version": "0.0.1",
-  "private": true,
   "scripts": {
     "test": "node ./spec/support/jasmine-runner.js"
   },
@@ -12,5 +11,6 @@
   "devDependencies": {
     "jasmine": "^2.5.2",
     "jasmine-spec-reporter": "^2.7.0"
-  }
+  },
+  "author": "Joel Söderström <joel@frostdigital.se>"
 }
