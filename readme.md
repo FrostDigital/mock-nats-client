@@ -12,13 +12,13 @@ Use same way as NATS node client.
 
 ## Support
 
-* Basic subscribe (subscribe options cannot be set at this time) 
+* Basic subscribe (limited support for subscribe options)
 * Basic unsubscribe
 * Publish
+* Queue groups
 * Timeout
 
 On the roadmap:
 
 * Request
-* Queue groups
-* Max awai
+* ...you name it!
