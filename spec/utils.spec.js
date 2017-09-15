@@ -9,6 +9,7 @@ describe("Utils", () => {
 	it("should match foo.* ", () => {
 		expect(utils.matchSubject("foo.bar", "foo.*")).toBeTruthy();	
 		expect(utils.matchSubject("foo.bar.baz", "foo.*")).toBeFalsy();	
+		expect(utils.matchSubject("foo", "foo.*")).toBeFalsy();	
 	});
 
 	it("should match foo.*.baz ", () => {
