@@ -12,5 +12,11 @@
     "jasmine": "^2.5.2",
     "jasmine-spec-reporter": "^2.7.0"
   },
-  "author": "Joel Söderström <joel@frostdigital.se>"
+  "author": "Joel Söderström <joel@frostdigital.se>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/FrostDigital/mock-nats-client.git"
+  },
+  "homepage": "https://github.com/FrostDigital/mock-nats-client#readme"
 }
