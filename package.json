@@ -2,7 +2,9 @@
   "name": "mock-nats-client",
   "version": "0.0.4",
   "scripts": {
-    "test": "node ./spec/support/jasmine-runner.js"
+    "test": "node ./spec/support/jasmine-runner.js",
+    "posttest": "npm run lint",
+    "lint": "jshint lib spec"
   },
   "dependencies": {
     "ms": "^0.7.2",
@@ -10,7 +12,8 @@
   },
   "devDependencies": {
     "jasmine": "^2.5.2",
-    "jasmine-spec-reporter": "^2.7.0"
+    "jasmine-spec-reporter": "^2.7.0",
+    "jshint": "^2.9.5"
   },
   "author": "Joel Söderström <joel@frostdigital.se>",
   "license": "MIT",

@@ -3,34 +3,34 @@ const MockNatsClient = require("../lib/MockNatsClient");
 describe("MockNatsClient", () => {
 
 	let client;
-	
+
 	beforeEach(() => {
 		client = new MockNatsClient();
 	});
-	
+
 	it("should connect and close", (done) => {
 		client.on("connect", () => {
-			expect(client.connected).toBe(true);		
-			client.close();			
+			expect(client.connected).toBe(true);
+			client.close();
 			expect(client.connected).toBe(false);
 			done();
 		});
-		
-		client.connect();	
+
+		client.connect();
 	});
-	
+
 	it("should emit 'disconnect' event on close", (done) => {
 		client.on("connect", () => {
-			expect(client.connected).toBe(true);		
+			expect(client.connected).toBe(true);
 			client.close();
 		});
-		
+
 		client.on("disconnect", () => {
 			expect(client.connected).toBe(false);
 			done();
 		});
-		
-		client.connect();	
+
+		client.connect();
 	});
 
 	it("should subscribe and publish to 'foo'", (done) => {
@@ -84,21 +84,21 @@ describe("MockNatsClient", () => {
 			expect(oSid).toBe(sid);
 			done();
 		});
-		
+
 	});
 
 	it("should not timeout if receiving expected num of messages", (done) => {
 
 		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {});
-		
+
 		client.timeout(sid, 100, 2, (oSid) => {
-			done.fail()
+			done.fail();
 		});
-		
+
 		client.publish("foo", "message");
-		client.publish("foo", "message");		
-		
-		setTimeout(() => {			
+		client.publish("foo", "message");
+
+		setTimeout(() => {
 			done();
 		}, 200);
 	});
@@ -108,15 +108,15 @@ describe("MockNatsClient", () => {
 		function count() {
 			numInvocations++;
 		}
-		
+
 		client.subscribe("foo", { queue: "q1" }, count);
 		client.subscribe("foo", { queue: "q1" }, count);
 		client.subscribe("foo", { queue: "q2" }, count);
 		client.subscribe("foo", { queue: "q2" }, count);
 		client.subscribe("foo", {}, count);
-		
-		client.publish("foo", "message");		
-		
+
+		client.publish("foo", "message");
+
 		setTimeout(() => {
 			expect(numInvocations).toBe(3);
 			done();
