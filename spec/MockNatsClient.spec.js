@@ -18,6 +18,20 @@ describe("MockNatsClient", () => {
 		
 		client.connect();	
 	});
+	
+	it("should emit 'disconnect' event on close", (done) => {
+		client.on("connect", () => {
+			expect(client.connected).toBe(true);		
+			client.close();
+		});
+		
+		client.on("disconnect", () => {
+			expect(client.connected).toBe(false);
+			done();
+		});
+		
+		client.connect();	
+	});
 
 	it("should subscribe and publish to 'foo'", (done) => {
 		client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {
