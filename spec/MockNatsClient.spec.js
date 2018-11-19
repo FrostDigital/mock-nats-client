@@ -66,8 +66,22 @@ describe("MockNatsClient", () => {
 		client.publish("foo.bar.baz", "message", "replyTo");
 	});
 
+	it("should handle serialized data when subscribing and publishing to 'foo'", (done) => {
+		const dateString = "2018-11-19T10:49:22.800Z";
+
+		client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {
+			expect(msg.date).toBe(dateString);
+			expect(replyTo).toBe("replyTo");
+			expect(actualSubject).toBe("foo");
+			done();
+		});
+
+		client.publish("foo", { date: new Date(dateString) }, "replyTo");
+	});
+
+
 	it("should unsubscribe", () => {
-		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {});
+		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => { });
 
 		expect(sid).toBeDefined();
 		expect(client.subs.length).toBe(1);
@@ -78,7 +92,7 @@ describe("MockNatsClient", () => {
 
 	it("should timeout", (done) => {
 
-		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {});
+		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => { });
 
 		client.timeout(sid, 100, 1, (oSid) => {
 			expect(oSid).toBe(sid);
@@ -89,7 +103,7 @@ describe("MockNatsClient", () => {
 
 	it("should not timeout if receiving expected num of messages", (done) => {
 
-		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {});
+		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => { });
 
 		client.timeout(sid, 100, 2, (oSid) => {
 			done.fail();
