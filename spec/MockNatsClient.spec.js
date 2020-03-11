@@ -5,7 +5,7 @@ describe("MockNatsClient", () => {
 	let client;
 
 	beforeEach(() => {
-		client = new MockNatsClient();
+		client = new MockNatsClient({json: true});
 	});
 
 	it("should connect and close", (done) => {
@@ -79,6 +79,42 @@ describe("MockNatsClient", () => {
 		client.publish("foo", { date: new Date(dateString) }, "replyTo");
 	});
 
+	it("should not json encode/decode by default", (done) => {
+		client = new MockNatsClient();
+		client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {
+			expect(msg).toBe("abc123");
+			expect(replyTo).toBe("replyTo");
+			expect(actualSubject).toBe("foo");
+			done();
+		});
+
+		client.publish("foo", Buffer.from("abc123"), "replyTo");
+	});
+
+	it("should not json encode/decode when setting json to false", (done) => {
+		client = new MockNatsClient({json: false});
+		client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {
+			expect(msg).toBe("abc123");
+			expect(replyTo).toBe("replyTo");
+			expect(actualSubject).toBe("foo");
+			done();
+		});
+
+		client.publish("foo", Buffer.from("abc123"), "replyTo");
+	});
+
+	it("should preserve raw buffers if told to", (done) => {
+		client = new MockNatsClient({preserveBuffers: true});
+		client.subscribe("foo", {}, (msg, replyTo, actualSubject) => {
+			expect(Buffer.isBuffer(msg)).toBe(true);
+			expect(msg.toString()).toBe("abc123");
+			expect(replyTo).toBe("replyTo");
+			expect(actualSubject).toBe("foo");
+			done();
+		});
+
+		client.publish("foo", Buffer.from("abc123"), "replyTo");
+	});
 
 	it("should unsubscribe", () => {
 		const sid = client.subscribe("foo", {}, (msg, replyTo, actualSubject) => { });
